@@ -19,7 +19,7 @@ class CheckPermission
         $user = $request->user();
 
         if(!$user) {
-            return response()->json(['message' => 'Unauthenticated.'], 401)
+            return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
         // 1. Buat nama kunci unik di Redis untuk user ini
