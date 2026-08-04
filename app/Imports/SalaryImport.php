@@ -5,29 +5,22 @@ namespace App\Imports;
 use App\Models\Employee;
 use App\Models\SalaryItem;
 use App\Models\SalaryBatch;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Validators\Failure;
+use Maatwebsite\Excel\Concerns\ToArray;
 
-class SalaryImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
+class SalaryImport implements ToArray
 {
-  protected array $failures = [];
-  protected
+  protected SalaryBatch $batch;
 
-  public function __construct(protected int $batchId) {}
-
-  public function headingRow(): int
+  public function __construct(SalaryBatch $batch)
   {
-    return 2;
+    $this->batch = $batch;
   }
 
   public function array(array $rows)
   {
+
     $periode = $rows[0][3] ?? null;     
-    $hrdName = $rows[1][3] ?? null;        
-    $jumlahKaryawan = $rows[2][3] ?? null;
+    $hrdName = $rows[1][3] ?? null;
 
     $this->batch->update([
         'periode'  => $periode,
@@ -83,28 +76,21 @@ class SalaryImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
             'gaji_bersih'          => $gajiBersih,
         ]);
     }
+
+    if(!empty($items)) {
+        SalaryItem::insert($items);
+    }
   }
 
-  public function import(Request $request)
+  private function toNumber($value): float
   {
-      $request->validate(['file' => 'required|mimes:xlsx,xls']);
+      if (is_numeric($value)) {
+          return (float) $value;
+      }
 
-      $batch = SalaryBatch::create([
-          'batch_name' => 'Batch ' . now()->format('Y-m-d H:i'),
-          'company_name' => 'PT MUDA JAYA KAYA RAYA',
-          'company_address' => 'Jl. Mastrip No 17 Kota Blitar, Kepanjen Kidul/Kepanjen Kidul, Jawa Timur',
-      ]);
-
-      Excel::import(new SalaryImport($batch), $request->file('file'));
-
-      return response()->json([
-          'message' => 'Import berhasil',
-          'batch_id' => $batch->id,
-          'periode' => $batch->fresh()->periode,
-          'total_items' => $batch->items()->count(),
-      ]);
+      // Membersihkan format Rp, titik/koma dari Excel string
+      $clean = preg_replace('/[^\d.]/', '', str_replace(',', '.', $value));
+      return (float) $clean;
   }
-
-  
 
 }
