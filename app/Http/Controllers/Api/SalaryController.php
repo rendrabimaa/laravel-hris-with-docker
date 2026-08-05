@@ -23,6 +23,8 @@ class SalaryController extends Controller
             $batch = SalaryBatch::create([
                 'batch_name'      => 'Batch ' . now()->format('Y-m-d H:i'),
                 'company_name'    => 'PT MUDA JAYA KAYA RAYA',
+                'periode' => '',
+                'hrd_name' => '',
                 'company_address' => 'Jl. Mastrip No 17 Kota Blitar, Kepanjen Kidul/Kepanjen Kidul, Jawa Timur',
                 'status' => 'processing'
             ]);
@@ -36,7 +38,6 @@ class SalaryController extends Controller
             return response()->json([
                 'message' => 'Import data gaji berhasil diproses',
                 'batch_id'    => $batch->id,
-                'periode'     => $batch->fresh()->periode,
                 'total_items' => $batch->salaryItems()->count(),
             ], 201);
         } catch (\Exception $e) {

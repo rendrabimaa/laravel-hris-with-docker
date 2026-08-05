@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\SalaryController;
 
 // Anggap saja routes ini sudah dibungkus auth sanctum nantinya
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -15,6 +16,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return response()->json(['message' => 'Masuk ke menu kelola produk']);
     })->middleware('check.permission:manage-products');
 
+    
 });
 
 // routes/api.php
@@ -24,4 +26,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/salary/import', [SalaryController::class, 'import']);
 });

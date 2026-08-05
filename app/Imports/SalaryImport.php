@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use App\Models\Employee;
 use App\Models\SalaryItem;
 use App\Models\SalaryBatch;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -19,8 +18,8 @@ class SalaryImport implements ToArray
   public function array(array $rows)
   {
 
-    $periode = $rows[0][3] ?? null;     
-    $hrdName = $rows[1][3] ?? null;
+    $periode = $rows[0][3] ?? 'test';     
+    $hrdName = $rows[1][3] ?? 'test';
 
     $this->batch->update([
         'periode'  => $periode,
@@ -50,15 +49,14 @@ class SalaryImport implements ToArray
         $gajiBersih    = $this->toNumber($row[16] ?? ($jmlPendapatan - $jmlPotongan));
 
         $noId = (string) ($row[2] ?? '');
-        $email = optional(Employee::where('nip', $noId)->first())->email;
+        // $email = optional(Employee::where('nip', $noId)->first())->email;
 
         SalaryItem::create([
             'salary_batch_id'      => $this->batch->id,
-            'nama'                 => $row[1] ?? '',
-            'no_id'                => $noId,
+            'nama_lengkap'                 => $row[1] ?? '',
+            'nip'                => $noId,
             'jabatan'              => $row[3] ?? null,
             'npwp'                 => $row[4] ?? null,
-            'email'                => $email,
 
             'gaji_pokok'           => $gajiPokok,
             'tunjangan_loyalitas'  => $tunjanganLoyalitas,
