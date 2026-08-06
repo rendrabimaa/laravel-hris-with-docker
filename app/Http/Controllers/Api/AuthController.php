@@ -30,7 +30,7 @@ class AuthController extends Controller
 
     if(!Auth::attempt($request->only('email', 'password'))) {
       RateLimiter::hit($throttleKey, 60);
-      throw ValidationException::withMessage([
+      throw ValidationException::withMessages([
         'email' => 'Email atau password salah.'
       ]);
     }

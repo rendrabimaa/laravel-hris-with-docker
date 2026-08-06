@@ -40,12 +40,18 @@
 </head>
 <body>
 
+  @php
+    use App\Helpers\Terbilang;
+  @endphp
+
   {{-- Header --}}
   <table class="header-table">
     <tr>
       <td width="60%">
-        <div class="company-name">{{ $batch->company_name }}</div>
-        <div>{{ $batch->company_address }}</div>
+        <div class="company-name">PT MUDA JAYA KAYA RAYA</div>
+        <div>Jl. Mastrip No 17 Kota Blitar</div>
+        <div>Kepanjen Kidul/Kepanjen Kidul</div>
+        <div class="company-name">Jawa Timur</div>
       </td>
       <td width="40%">
         <div class="slip-title">SLIP GAJI</div>
@@ -58,11 +64,11 @@
   {{-- Info Karyawan --}}
   <table class="info-table">
     <tr>
-      <td class="label">ID</td><td class="sep">:</td><td width="35%">{{ $item->no_id }}</td>
+      <td class="label">ID</td><td class="sep">:</td><td width="35%">{{ $item->nip }}</td>
       <td class="label">Jabatan</td><td class="sep">:</td><td>{{ $item->jabatan }}</td>
     </tr>
     <tr>
-      <td class="label">Nama Karyawan</td><td class="sep">:</td><td colspan="4"><strong>{{ $item->nama }}</strong></td>
+      <td class="label">Nama</td><td class="sep">:</td><td colspan="4"><strong>{{ $item->nama_lengkap }}</strong></td>
     </tr>
   </table>
 
@@ -73,32 +79,32 @@
       <th width="35%">POTONGAN</th><th width="15%"></th>
     </tr>
     <tr>
-      <td>Gaji Pokok</td><td class="amount">Rp {{ number_format($item->gaji_pokok, 0, ',', '.') }}</td>
-      <td>BPJS Kesehatan</td><td class="amount">Rp {{ number_format($item->bpjs_kesehatan, 0, ',', '.') }}</td>
+      <td>Gaji Pokok</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->gaji_pokok) }}</td>
+      <td>BPJS Kesehatan</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->bpjs_kesehatan) }}</td>
     </tr>
     <tr>
-      <td>Tunjangan Loyalitas</td><td class="amount">Rp {{ number_format($item->tunjangan_loyalitas, 0, ',', '.') }}</td>
-      <td>BPJS TK</td><td class="amount">Rp {{ number_format($item->bpjs_tk, 0, ',', '.') }}</td>
+      <td>Tunjangan Loyalitas</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->tunjangan_loyalitas) }}</td>
+      <td>BPJS TK</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->bpjs_tk) }}</td>
     </tr>
     <tr>
-      <td>Tunjangan Jabatan</td><td class="amount">Rp {{ number_format($item->tunjangan_jabatan, 0, ',', '.') }}</td>
-      <td>Kedisiplinan</td><td class="amount">Rp {{ number_format($item->kedisiplinan, 0, ',', '.') }}</td>
+      <td>Tunjangan Jabatan</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->tunjangan_jabatan) }}</td>
+      <td>Kedisiplinan</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->kedisiplinan) }}</td>
     </tr>
     <tr>
-      <td>Lembur</td><td class="amount">Rp {{ number_format($item->lembur, 0, ',', '.') }}</td>
+      <td>Lembur</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->lembur) }}</td>
       <td></td><td></td>
     </tr>
     <tr>
-      <td>Insentif</td><td class="amount">Rp {{ number_format($item->insentif, 0, ',', '.') }}</td>
+      <td>Insentif</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->insentif) }}</td>
       <td></td><td></td>
     </tr>
     <tr>
-      <td>Uang Makan</td><td class="amount">Rp {{ number_format($item->uang_makan, 0, ',', '.') }}</td>
+      <td>Uang Makan</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->uang_makan) }}</td>
       <td></td><td></td>
     </tr>
     <tr class="total-row">
-      <td>JUMLAH PENDAPATAN</td><td class="amount">Rp {{ number_format($item->jml_pendapatan, 0, ',', '.') }}</td>
-      <td>JUMLAH POTONGAN</td><td class="amount">Rp {{ number_format($item->jml_potongan, 0, ',', '.') }}</td>
+      <td>JUMLAH PENDAPATAN</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->jml_pendapatan) }}</td>
+      <td>JUMLAH POTONGAN</td><td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->jml_potongan) }}</td>
     </tr>
   </table>
 
@@ -106,7 +112,7 @@
   <table class="gaji-bersih-table" style="margin-top: 8px;">
     <tr>
       <td width="20%">GAJI BERSIH</td>
-      <td class="amount">Rp {{ number_format($item->gaji_bersih, 0, ',', '.') }}</td>
+      <td class="amount">{{ \App\Helpers\Terbilang::formatRp($item->gaji_bersih) }}</td>
     </tr>
   </table>
   <div class="terbilang">({{ $terbilang }})</div>

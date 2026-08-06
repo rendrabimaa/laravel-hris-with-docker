@@ -40,13 +40,13 @@ class SalaryImport implements ToArray
         $lembur             = $this->toNumber($row[8] ?? 0);
         $insentif           = $this->toNumber($row[9] ?? 0);
         $uangMakan          = $this->toNumber($row[10] ?? 0);
-        $jmlPendapatan      = $this->toNumber($row[11] ?? 0);
+        $jmlPendapatan      = $gajiPokok + $tunjanganLoyalitas + $tunjanganJabatan + $lembur + $insentif + $uangMakan;
 
         $bpjsKesehatan = $this->toNumber($row[12] ?? 0);
         $bpjsTk        = $this->toNumber($row[13] ?? 0);
         $kedisiplinan  = $this->toNumber($row[14] ?? 0);
-        $jmlPotongan   = $this->toNumber($row[15] ?? 0);
-        $gajiBersih    = $this->toNumber($row[16] ?? ($jmlPendapatan - $jmlPotongan));
+        $jmlPotongan   = $bpjsKesehatan + $bpjsTk + $kedisiplinan;
+        $gajiBersih    = $jmlPendapatan - $jmlPotongan;
 
         $noId = (string) ($row[2] ?? '');
         // $email = optional(Employee::where('nip', $noId)->first())->email;

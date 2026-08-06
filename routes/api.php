@@ -27,4 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/salary/import', [SalaryController::class, 'import']);
+    Route::get('/salary/{batchId}/process', [SalaryController::class, 'process']);
+    Route::get('/salary/{batchId}/status', [SalaryController::class, 'status']);
+    Route::get('/salary/{batchId}/download', [SalaryController::class, 'downloadZip']);
 });
